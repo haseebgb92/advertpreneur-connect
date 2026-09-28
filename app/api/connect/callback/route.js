@@ -19,7 +19,11 @@ export async function GET(request) {
 
     const id = siteId(returnedSite);
     await upsertSite({ id, siteUrl: returnedSite, userLogin, password });
-    return page('Advertpreneur Connect', `<p><strong>${returnedSite}</strong> is connected.</p><p>Site ID: <code>${id}</code></p><p>You can close this tab and return to ChatGPT.</p>`);
+
+    const back = new URL('/wp-admin/admin.php', returnedSite);
+    back.searchParams.set('page', 'advertpreneur-connect');
+    back.searchParams.set('adpc_connected', '1');
+    return Response.redirect(back.toString(), 302);
   } catch (error) {
     return page('Connection failed', `<p>${String(error?.message || error)}</p>`);
   }

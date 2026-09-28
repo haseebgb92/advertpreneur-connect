@@ -1,24 +1,51 @@
-# Advertpreneur Connect — Vercel v0.2
+# Advertpreneur Connect — v0.4
 
-Central MCP service for Advertpreneur Connect.
+Secure WordPress bridge hosted on Vercel.
 
 ## Architecture
 
-ChatGPT -> Vercel `/api/mcp` -> connected WordPress sites.
+Custom GPT Action -> Vercel `/api/action/*` -> connected WordPress sites.
 
-WordPress credentials are created through the native Application Password authorization screen and stored encrypted in Postgres. The service never asks for the user's normal WordPress password.
+The MCP endpoint remains available for future compatible clients but is disabled unless `ADPC_MCP_BEARER_TOKEN` is explicitly configured.
 
-## Environment variables
+WordPress credentials are created through WordPress's native Application Password authorization screen, encrypted by the Vercel service, and persisted through a private Supabase Edge Function. The user's normal WordPress password is never requested.
 
-- `ADPC_DATABASE_URL` — Supabase transaction-pooler PostgreSQL connection string
-- `ADPC_ENCRYPTION_KEY` — long random secret for AES-256-GCM credential encryption
-- `ADPC_STATE_SECRET` — long random secret for signed WordPress connection state
-- `ADPC_APP_ID` — stable UUID; default is included
-- `ADPC_BASE_URL` — optional override; Vercel production URL is auto-detected
-- `ADPC_MCP_BEARER_TOKEN` — optional private-test bearer token; production distribution should use proper MCP authentication/OAuth
+## Managed WordPress data
+
+- Blog posts
+- Pages
+- Media uploads/imports
+- Featured images
+- WooCommerce products when WooCommerce is active
+- Local-site content search
+- Deterministic repetition/thin-content checks
+- Site-overlap/cannibalization checks
+- Quality-attested publishing
+
+The WordPress plugin never generates content itself.
+
+## Required Vercel environment variables
+
+- `ADPC_STORE_URL`
+- `ADPC_STORE_TOKEN`
+- `ADPC_ENCRYPTION_KEY`
+- `ADPC_STATE_SECRET`
+- `ADPC_ACTION_TOKEN`
+
+`ADPC_MCP_BEARER_TOKEN` is optional. If absent, `/api/mcp` returns disabled rather than exposing write tools without authentication.
+
+## Custom GPT Actions
+
+Import the schema from:
+
+`https://advertpreneur-connect.vercel.app/openapi.json`
+
+Configure API-key authentication as Bearer and use the same value as `ADPC_ACTION_TOKEN`.
 
 ## Direct image path
 
-`upload_image_base64` sends real base64 image bytes to the Advertpreneur Connect WordPress plugin, which validates MIME, writes the image to WordPress uploads, creates the attachment, generates metadata, and returns a WordPress `media_id` and hosted URL.
+`uploadImageBase64` accepts actual base64 image bytes and sends them to the WordPress plugin, which validates the image, writes it into WordPress uploads, creates the media attachment, and returns a real `media_id`.
 
-`import_image_url` is the fallback path for a public HTTPS image URL.
+`importImageUrl` is the fallback path for a public HTTPS image URL.
+
+Do not report an image as uploaded until WordPress returns a real media ID.

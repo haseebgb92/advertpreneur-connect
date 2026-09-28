@@ -12,7 +12,7 @@ const mcp = createMcpHandler(
 );
 
 function authorized(request) {
-  const expected = process.env.MCP_BEARER_TOKEN;
+  const expected = process.env.ADPC_MCP_BEARER_TOKEN || process.env.MCP_BEARER_TOKEN;
   if (!expected) return true;
   return request.headers.get('authorization') === `Bearer ${expected}`;
 }

@@ -8,7 +8,7 @@ const mcp = createMcpHandler(
   },
   {
     serverInfo: { name: 'advertpreneur-connect', version: '0.5.0' },
-    instructions: 'WordPress bridge only. Never invent site facts. Search existing site content before proposing new content. Prefer drafts. Never claim an image was uploaded unless WordPress returned a media_id. Publishing requires a current passing quality attestation.',
+    instructions: 'WordPress bridge only. Never invent site facts. Search existing site content before proposing new content. Prefer drafts. Before generating or selecting an image for a known WordPress slot, call get_image_requirements and follow the actual placeholder ratio; never invent fixed dimensions when the slot is unknown. Preserve native image quality, do not upscale, and never substitute a dummy or blank image for the requested asset. Never claim an image was uploaded unless WordPress returned a media_id. Publishing requires a current passing quality attestation.',
   },
 );
 

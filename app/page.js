@@ -42,8 +42,8 @@ export default function Home() {
       <header className="top">
         <div className="shell nav">
           <a className="brand" href="/"><span className="mark">AC</span>Advertpreneur Connect</a>
-          <nav className="links"><a href="#features">Capabilities</a><a href="#quality">Quality</a><a href="#security">Security</a><a href="#developers">Developers</a></nav>
-          <div className="actions"><a className="btn" href="https://github.com/haseebgb92/advertpreneur-connect">GitHub</a><a className="btn dark" href="/openapi.json">OpenAPI</a></div>
+          <nav className="links"><a href="#features">Capabilities</a><a href="#quality">Quality</a><a href="#security">Security</a><a href="#developers">Developers</a><a href="/setup">Setup</a></nav>
+          <div className="actions"><a className="btn" href="https://github.com/haseebgb92/advertpreneur-connect">GitHub</a><a className="btn" href="/setup">Setup</a><a className="btn dark" href="/openapi.json">OpenAPI</a></div>
         </div>
       </header>
 
@@ -52,7 +52,7 @@ export default function Home() {
           <div className="pill">WordPress + WooCommerce · MCP + Actions · v0.6.1</div>
           <h1>A safer bridge between AI and WordPress.</h1>
           <p>Advertpreneur Connect gives trusted AI clients controlled access to WordPress content, SEO, media and WooCommerce — with site-aware checks and quality-gated publishing instead of blind automation.</p>
-          <div className="actions"><a className="btn dark" href="https://github.com/haseebgb92/advertpreneur-connect">View on GitHub</a><a className="btn" href="/openapi.json">Explore the API</a></div>
+          <div className="actions"><a className="btn dark" href="/setup">Setup Advertpreneur Connect</a><a className="btn" href="https://github.com/haseebgb92/advertpreneur-connect">View on GitHub</a></div>
           <div className="meta"><span>WordPress</span><span>WooCommerce</span><span>MCP</span><span>Vercel</span><span>Supabase</span><span>SEO-aware</span></div>
         </div>
       </section>

@@ -1,6 +1,6 @@
-# Advertpreneur Connect — v0.4
+# Advertpreneur Connect — AI-to-WordPress MCP & Action Bridge
 
-Secure WordPress bridge hosted on Vercel.
+**Current public backend: v0.6.1** · Next.js · Vercel · Supabase · WordPress · WooCommerce\n\nAdvertpreneur Connect is a controlled bridge that lets trusted AI clients work with WordPress content, SEO metadata, media and WooCommerce while enforcing site-aware checks and a quality-gated publishing workflow.\n\n**Live service:** https://advertpreneur-connect.vercel.app · **OpenAPI:** https://advertpreneur-connect.vercel.app/openapi.json
 
 ## Architecture
 
@@ -10,7 +10,7 @@ The MCP endpoint remains available for future compatible clients but is disabled
 
 WordPress credentials are created through WordPress's native Application Password authorization screen, encrypted by the Vercel service, and persisted through a private Supabase Edge Function. The user's normal WordPress password is never requested.
 
-## Managed WordPress data
+## What it can manage
 
 - Blog posts
 - Pages
@@ -22,7 +22,7 @@ WordPress credentials are created through WordPress's native Application Passwor
 - Site-overlap/cannibalization checks
 - Quality-attested publishing
 
-The WordPress plugin never generates content itself.
+The WordPress plugin never generates content itself. AI clients provide the writing; Advertpreneur Connect provides the controlled WordPress operations, site context and publication safeguards.\n\n## Quality-gated publishing\n\nThe intended workflow is:\n\n1. Search the existing site before drafting.\n2. Read the real content/SEO/taxonomy state.\n3. Create or update a draft.\n4. Run SEO, repetition and site-overlap checks.\n5. Store a passing quality attestation tied to the exact current content.\n6. Publish only while that approval is still valid.\n\nAny content mutation invalidates the earlier approval.
 
 ## Required Vercel environment variables
 
@@ -34,7 +34,7 @@ The WordPress plugin never generates content itself.
 
 `ADPC_MCP_BEARER_TOKEN` is optional. If absent, `/api/mcp` returns disabled rather than exposing write tools without authentication.
 
-## Custom GPT Actions
+## Action API / compatible AI clients
 
 Import the schema from:
 

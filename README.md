@@ -1,6 +1,6 @@
 # Advertpreneur Connect — AI-to-WordPress MCP & Action Bridge
 
-**Current public backend: v0.6.1** · Next.js · Vercel · Supabase · WordPress · WooCommerce\n\nAdvertpreneur Connect is a controlled bridge that lets trusted AI clients work with WordPress content, SEO metadata, media and WooCommerce while enforcing site-aware checks and a quality-gated publishing workflow.\n\n**Website:** https://advertpreneur-connect.vercel.app · **Setup guide:** https://advertpreneur-connect.vercel.app/setup · **OpenAPI:** https://advertpreneur-connect.vercel.app/openapi.json
+**Current public backend: v0.6.1** · Next.js · Vercel · Supabase · WordPress · WooCommerce\n\nAdvertpreneur Connect is a controlled bridge that lets trusted AI clients work with WordPress content, SEO metadata, media and WooCommerce while enforcing site-aware checks and a quality-gated publishing workflow.\n\n**Website:** https://advertpreneur-connect.vercel.app · **Setup guide:** https://advertpreneur-connect.vercel.app/setup · **Supabase/OAuth setup:** [docs/SUPABASE_SETUP.md](docs/SUPABASE_SETUP.md) · **OpenAPI:** https://advertpreneur-connect.vercel.app/openapi.json
 
 ## Architecture
 

@@ -1,4 +1,4 @@
-import { normalizeSiteUrl } from '../../../../lib/config.js';
+import { validateWordPressCallbackSite } from '../../../../lib/config.js';
 import { siteId, verifyState } from '../../../../lib/crypto.js';
 import { upsertSite } from '../../../../lib/db.js';
 
@@ -14,8 +14,7 @@ export async function GET(request) {
   try {
     const url = new URL(request.url);
     const state = verifyState(url.searchParams.get('state'));
-    const returnedSite = normalizeSiteUrl(url.searchParams.get('site_url') || state.siteUrl);
-    if (returnedSite !== normalizeSiteUrl(state.siteUrl)) throw new Error('Site mismatch in callback');
+    const returnedSite = validateWordPressCallbackSite(state.siteUrl, url.searchParams.get('site_url'));
 
     const userLogin = url.searchParams.get('user_login');
     const password = url.searchParams.get('password');

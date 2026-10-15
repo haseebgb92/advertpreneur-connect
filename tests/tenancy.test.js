@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { normalizeSiteUrl } from '../lib/config.js';
+import { normalizeSiteUrl, validateWordPressCallbackSite } from '../lib/config.js';
 import { seal, openSealed, siteId, signedState, verifyState } from '../lib/crypto.js';
 import { getSite, listSites, upsertSite } from '../lib/db.js';
 
@@ -82,4 +82,14 @@ test('explicit site access grant permits an existing legacy site for authorized 
     const site = await getSite('0123456789abcdef01234567', owner1);
     assert.equal(site.siteUrl, 'https://example.org');
   } finally { globalThis.fetch = oldFetch; }
+});
+
+
+test('WordPress proxy callback accepts only same-host HTTP while retaining secure signed HTTPS destination', () => {
+  assert.equal(validateWordPressCallbackSite('https://lovfah.com', 'http://lovfah.com'), 'https://lovfah.com');
+  assert.equal(validateWordPressCallbackSite('https://lovfah.com', 'https://lovfah.com/wordpress'), 'https://lovfah.com');
+  assert.equal(validateWordPressCallbackSite('https://lovfah.com', null), 'https://lovfah.com');
+  for (const url of ['http://evil.example', 'https://lovfah.com.evil.example', 'http://lovfah.com:8080', 'http://person:pass@lovfah.com', 'file:///etc/passwd']) {
+    assert.throws(()=>validateWordPressCallbackSite('https://lovfah.com',url), /Site mismatch/);
+  }
 });

@@ -1,7 +1,7 @@
 # Advertpreneur Connect — Production readiness record
 
 **Reviewed:** October 15, 2026
-**Product:** Advertpreneur Connect 0.7.2 WordPress/MCP backend, plugin 0.7.0, Agensi skill package 0.2.1.
+**Product:** Advertpreneur Connect 0.7.3 WordPress/MCP backend, plugin 0.7.0, Agensi skill package 0.2.1.
 **Production endpoint:** https://advertpreneur-connect.vercel.app/api/mcp
 **Companion WordPress ZIP:** [v0.7.0](../releases/advertpreneur-connect-wordpress-v0.7.0.zip)
 **Agensi skill ZIP:** [v0.2.1](../releases/advertpreneur-connect-agensi-skill-v0.2.1.zip)
@@ -17,7 +17,7 @@
 - WordPress 7.1.2, PHP 8.3 with Advertpreneur Connect plugin 0.7.0: real REST draft creation, read-back, structural and overlap checks, document attestation, forbidden contributor edits, stale attestation rejection, authorized publish and idempotent retry passed.
 - Real PNG upload, native dimensions, media metadata, featured image placement and unauthorized contributor rejection passed.
 - WooCommerce: draft creation, duplicate prevention, contributor price-write denial, structural checks, product attestation, content-update invalidation, reattestation and authorized publication passed.
-- Fourteen backend Node.js unit/integration tests passed; a real HTTPS pinned-DNS probe returned an expected WordPress 401 for invalid test credentials.
+- Fifteen backend Node.js unit/integration tests passed; a real HTTPS pinned-DNS probe returned an expected WordPress 401 for invalid test credentials.
 - Next.js optimized build and PHP syntax checks passed. GitHub Actions release workflow passed on commit `4c099392`. Dependency audit returned zero known advisories at the checked lockfile versions.
 - Agensi ZIP has a valid folder-root `SKILL.md` + reference files, no executable scripts or hard-coded credentials; archive integrity checked. Agensi has not reviewed or approved the listing.
 
@@ -50,3 +50,9 @@ These candidates are **not yet end-to-end certified**. Before a full customer-si
 ## Reproducible WordPress integration suite (backend 0.7.2)
 
 The `qa/run-wordpress-e2e.sh` runner provisions an isolated local WordPress Docker site, installs plugin 0.7.0, WooCommerce and Rank Math, runs REST tests for draft/attestation/publishing, uploads a real PNG, validates permissions, checks WooCommerce catalog protections, and verifies Rank Math native metadata round-trips. It is now included as a dedicated GitHub Actions job. The runner creates no public website, stores no customer credentials and leaves all customer domains untouched. A passing local integration suite is **not** a substitute for authorized public HTTPS MCP end-to-end testing.
+
+## Further Hostinger-compatibility hardening (backend 0.7.3)
+
+The WordPress Application Password callback accepts the site URL reported as `http://` **only when its hostname exactly matches the HMAC-signed HTTPS site**. The stored destination remains the signed HTTPS origin. This addresses proxies/WordPress multisite setups such as the Lovfah configuration where `siteurl` and `home` differ in scheme, without accepting cross-site callbacks, embedded credentials or alternate ports. Dedicated security regression tests were added.
+
+GitHub Actions run `38705273957` passed both the backend/build and real disposable WordPress integration jobs for version 0.7.2. The 0.7.3 release adds the callback check and must also pass CI after deployment.

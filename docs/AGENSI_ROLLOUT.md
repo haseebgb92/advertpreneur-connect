@@ -40,3 +40,7 @@ Production has a private 'adpc_site_access' grant table with RLS enabled and ano
 
 ## Hostinger domain checks October 15, 2026
 The user excluded Advertpreneur.com and CoocooBabys from this QA attempt. Public reachability and WordPress admin were inspected only for lovfah.com, myecomnews.com and tauqva.com. Lovfah WordPress REST index responded, but the companion plugin was missing; it is a multisite installation. MyEcomNews had an HTTP 500 from its REST index, the companion plugin was not installed, and Hostinger displayed 16 reported WordPress vulnerabilities. Tauqva returned timeouts and the dashboard displayed a failed renewal warning. Hostinger's staging and plugin-upload workflow could not be safely completed using the browser control. No installation or content write occurred on these domains.
+
+
+## Proxy-mode callback strict origin handling
+For WordPress behind reverse proxies, the callback site_url may report http even while the approved user's public domain runs HTTPS. The callback now verifies the returned hostname against the HMAC-signed requested HTTPS origin and stores only the signed HTTPS origin. A redirect to another host, embedded userinfo, or a nonstandard port remains prohibited.

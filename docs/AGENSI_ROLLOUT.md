@@ -19,3 +19,10 @@ The historical MCP authorizer validates OAuth tokens, but the old storage functi
 - The transport-specific MCP stream lifecycle must be tested after the change to construct request-scoped handlers.
 - URLs pointing at local/private domains are blocked at parsing, but DNS rebinding/SSRF prevention and redirect behavior still require a security review before public multi-tenant launch.
 - No cross-user data isolation claim is made until backend, store, database and agent integration are deployed and tested together.
+
+## Verified 2026-10-15 progress
+- Additive production Supabase migration applied; two previously connected legacy sites retained.
+- Isolated new Edge Function `advertpreneur-store-v2` deployed; legacy `advertpreneur-store` unchanged.
+- PHP companion version 0.7.0 tested on isolated Docker WordPress 7.1.2 installation with real draft, quality checks, permissions, stale attestation refusal, successful publish and idempotent retry.
+- Secure outbound request uses DNS-resolved pinned public IP and rejects redirects/private destinations.
+- Legacy production Vercel endpoint has not been changed.

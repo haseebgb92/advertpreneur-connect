@@ -1,0 +1,32 @@
+services:
+  db:
+    image: mariadb:11.4
+    environment:
+      MARIADB_ROOT_PASSWORD: qa-local-only
+      MARIADB_DATABASE: wordpress
+      MARIADB_USER: wordpress
+      MARIADB_PASSWORD: qa-local-only
+    volumes: [db-data:/var/lib/mysql]
+  wordpress:
+    image: wordpress:php8.3-apache
+    ports: ["127.0.0.1:8099:80"]
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: qa-local-only
+      WORDPRESS_DB_NAME: wordpress
+    depends_on: [db]
+    volumes: [wp-data:/var/www/html]
+  wpcli:
+    image: wordpress:cli-php8.3
+    profiles: [cli]
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: qa-local-only
+      WORDPRESS_DB_NAME: wordpress
+    depends_on: [db]
+    volumes: [wp-data:/var/www/html]
+volumes:
+  db-data:
+  wp-data:

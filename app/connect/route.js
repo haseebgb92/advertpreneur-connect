@@ -5,7 +5,7 @@ export async function GET(request) {
   try {
     const incoming = new URL(request.url);
     const site = normalizeSiteUrl(incoming.searchParams.get('site_url'));
-    const state = signedState(site);
+    const state = signedState(site, 'legacy');
     const base = publicBaseUrl();
 
     const approve = new URL('/wp-admin/authorize-application.php', site);

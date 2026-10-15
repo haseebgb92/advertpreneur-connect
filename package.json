@@ -1,13 +1,14 @@
 {
   "name": "advertpreneur-connect-vercel",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "private": true,
   "type": "module",
   "engines": { "node": ">=20" },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "test": "node --test tests/*.test.js"
   },
   "dependencies": {
     "@modelcontextprotocol/server": "^2.0.0",

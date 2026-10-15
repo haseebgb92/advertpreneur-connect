@@ -2,16 +2,18 @@ import { createMcpHandler } from 'mcp-handler';
 import { registerTools } from '../../../lib/mcp-tools.js';
 import { oauthChallenge, verifyMcpAuthorization } from '../../../lib/oauth.js';
 
-const mcp = createMcpHandler(
+function handlerForOwner(ownerId) {
+  return createMcpHandler(
   (server) => {
-    registerTools(server);
+    registerTools(server, ownerId);
   },
   {
-    serverInfo: { name: 'advertpreneur-connect', version: '0.6.1' },
+    serverInfo: { name: 'advertpreneur-connect', version: '0.7.0' },
     instructions: 'WordPress bridge only. Never invent site facts. Search existing site content before proposing new content. Prefer drafts. Before assigning categories or tags, inspect real site terms. Before adding internal links, use suggest_internal_links and only link real published URLs where contextually useful. Detect the active SEO plugin with seo_status before writing SEO metadata. Run seo_audit before final quality attestation and fix genuine issues such as missing exact focus-keyword placement, image alt, or TOC without keyword stuffing. Never optimize toward a plugin score at the expense of readable, accurate copy. Before generating or selecting an image for a known WordPress slot, call get_image_requirements and follow the actual placeholder ratio; never invent fixed dimensions when the slot is unknown. Preserve native image quality, do not upscale, and never substitute a dummy or blank image for the requested asset. Never claim an image was uploaded unless WordPress returned a media_id. Publishing requires a current passing quality attestation.',
   },
 );
 
+}
 async function handle(request) {
   const url = new URL(request.url);
   const auth = await verifyMcpAuthorization(request);
@@ -24,7 +26,8 @@ async function handle(request) {
     });
   }
 
-  return mcp(request);
+  const ownerId = auth.kind === 'oauth' ? `oauth:${auth.subject}` : 'legacy';
+  return handlerForOwner(ownerId)(request);
 }
 
 export const runtime = 'nodejs';

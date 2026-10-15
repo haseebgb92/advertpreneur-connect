@@ -1,10 +1,10 @@
 # Advertpreneur Connect — Production readiness record
 
-**Reviewed:** October 15, 2026  
-**Product:** Advertpreneur Connect 0.7.0 WordPress/MCP backend, plugin 0.7.0, Agensi skill package 0.2.0.  
-**Production endpoint:** https://advertpreneur-connect.vercel.app/api/mcp  
-**Companion WordPress ZIP:** [v0.7.0](../releases/advertpreneur-connect-wordpress-v0.7.0.zip)  
-**Agensi skill ZIP:** [v0.2.0](../releases/advertpreneur-connect-agensi-skill-v0.2.0.zip)
+**Reviewed:** October 15, 2026
+**Product:** Advertpreneur Connect 0.7.1 WordPress/MCP backend, plugin 0.7.0, Agensi skill package 0.2.1.
+**Production endpoint:** https://advertpreneur-connect.vercel.app/api/mcp
+**Companion WordPress ZIP:** [v0.7.0](../releases/advertpreneur-connect-wordpress-v0.7.0.zip)
+**Agensi skill ZIP:** [v0.2.1](../releases/advertpreneur-connect-agensi-skill-v0.2.1.zip)
 
 ## Verified in production
 
@@ -17,7 +17,7 @@
 - WordPress 7.1.2, PHP 8.3 with Advertpreneur Connect plugin 0.7.0: real REST draft creation, read-back, structural and overlap checks, document attestation, forbidden contributor edits, stale attestation rejection, authorized publish and idempotent retry passed.
 - Real PNG upload, native dimensions, media metadata, featured image placement and unauthorized contributor rejection passed.
 - WooCommerce: draft creation, duplicate prevention, contributor price-write denial, structural checks, product attestation, content-update invalidation, reattestation and authorized publication passed.
-- Ten backend Node.js unit/integration tests passed; a real HTTPS pinned-DNS probe returned an expected WordPress 401 for invalid test credentials.
+- Eleven backend Node.js unit/integration tests passed; a real HTTPS pinned-DNS probe returned an expected WordPress 401 for invalid test credentials.
 - Next.js optimized build and PHP syntax checks passed. GitHub Actions release workflow passed on commit `4c099392`. Dependency audit returned zero known advisories at the checked lockfile versions.
 - Agensi ZIP has a valid folder-root `SKILL.md` + reference files, no executable scripts or hard-coded credentials; archive integrity checked. Agensi has not reviewed or approved the listing.
 
@@ -36,3 +36,7 @@ Reasonable: **“Advertpreneur Connect is a working, tested WordPress MCP publis
 Not yet substantiated: “All AI agents fully supported,” “zero setup,” “Agensi approved,” or “all customer sites upgraded.”
 
 The global Action token and optional static MCP bearer are reserved for private integrations; public marketplace customers must use individual OAuth identities, and must never receive shared secrets. Publishing additionally requires final user approval in the AI workflow; backend enforcement proves only the current quality-attestation condition, not that a human reviewed the factual claims.
+
+## Hosted upload constraints
+
+The MCP base64 image upload now rejects payloads above 4,000,000 characters before contacting WordPress. This is necessary because Vercel Function request bodies are limited to 4.5 MB including base64 expansion. For larger assets use `import_image_url` with approved public HTTPS media; WordPress validates the image and can accept up to 8 MB via that route.

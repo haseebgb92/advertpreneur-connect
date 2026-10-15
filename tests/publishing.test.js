@@ -83,3 +83,16 @@ test('pinned DNS callback supports single-IP and Node24 all-address modes', () =
     assert.equal(family,4);
   });
 });
+
+
+test('Action API returns an explicit payload limit error before upstream WordPress transfer', async () => {
+  const siteId='0123456789abcdef01234567';
+  const adapter={getSite:async()=>({siteUrl:'https://example.com'}),listSites:async()=>[],wpRequest:async()=>{throw Error('Must not call WP on invalid image')}};
+  const request = new Request('https://bridge.example/api/action/sites/'+siteId+'/media/base64', {
+    method:'POST',headers:{authorization:'Bearer test-private-action-token','content-type':'application/json'},
+    body:JSON.stringify({data:'X'.repeat(4_000_001)}),
+  });
+  const result=await handleAction(request,['sites',siteId,'media','base64'],adapter);
+  assert.equal(result.status,413);
+  assert.match((await result.json()).error,/about 3 MB/);
+});

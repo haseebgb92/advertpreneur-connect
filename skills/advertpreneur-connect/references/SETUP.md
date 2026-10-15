@@ -108,3 +108,8 @@ Install the Agensi skill using each supported client’s documented skill mechan
 
 - OpenAI Docs MCP agent configuration examples: https://developers.openai.com/learn/docs-mcp
 - Agensi cross-agent SKILL.md testing and caveats: https://www.agensi.io/learn/skill-md-cross-agent-compatibility-tested
+
+
+## Media transfer limit on the hosted Vercel bridge
+
+Vercel's serverless request body cap is 4.5 MB. Since base64 encoding increases byte size, 'upload_image_base64' is limited to **4,000,000 base64 characters (about 3 MB source bytes)**, and smaller images are preferable. An 8 MB image cannot fit through the MCP body even if the WordPress companion plugin accepts 8 MB when called directly. **For larger authorized media, use 'import_image_url' to have WordPress retrieve a real public HTTPS asset** (up to the companion plugin's 8 MB file limit), or use WordPress's ordinary Media Library workflow. Never split image bytes across invented tools or claim a rejected upload succeeded.

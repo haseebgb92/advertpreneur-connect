@@ -18,7 +18,7 @@
 | Draft | `create_draft` | Real ID + draft status |
 | Edit | `update_post` | Correct existing ID + read-back |
 | Layout | `get_image_requirements` | Site/slot-specific dimensions or probe required |
-| Image bytes | `upload_image_base64` | WordPress-created media ID |
+| Image bytes | `upload_image_base64` | WordPress-created media ID; ≤4,000,000 base64 chars (~3 MB source) on Vercel |
 | HTTPS image | `import_image_url` | Authorized licensed image + media ID |
 | Featured image | `set_featured_image` | Actual attachment persisted |
 | Quality | `quality_check` | Passing structure/repetition checks |

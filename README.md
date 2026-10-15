@@ -1,6 +1,6 @@
 # Advertpreneur Connect — AI-to-WordPress MCP & Action Bridge
 
-**Backend v0.7.0** · Next.js · Vercel · Supabase · WordPress · WooCommerce
+**Backend v0.7.1** · Next.js · Vercel · Supabase · WordPress · WooCommerce
 
 Advertpreneur Connect is a controlled bridge that lets trusted AI clients work with WordPress content, SEO metadata, media and WooCommerce while enforcing site-aware checks and a quality-gated publishing workflow.\n\n**Website:** https://advertpreneur-connect.vercel.app · **Setup guide:** https://advertpreneur-connect.vercel.app/setup · **Supabase/OAuth setup:** [docs/SUPABASE_SETUP.md](docs/SUPABASE_SETUP.md) · **OpenAPI:** https://advertpreneur-connect.vercel.app/openapi.json
 
@@ -129,7 +129,7 @@ Do not report an image as uploaded until WordPress returns a real media ID.
 
 ## Agensi marketplace distribution
 
-Use the [Advertpreneur Connect v0.2.0 agent skill](releases/advertpreneur-connect-agensi-skill-v0.2.0.zip) from the Agensi ZIP to guide content planning, real WordPress draft creation, SEO checks, approved image uploads, factual/overlap assessment, and user-approved publishing. A separate WordPress companion plugin is required. Skill installation alone never grants WordPress access.
+Use the [Advertpreneur Connect v0.2.1 agent skill](releases/advertpreneur-connect-agensi-skill-v0.2.1.zip) from the Agensi ZIP to guide content planning, real WordPress draft creation, SEO checks, approved image uploads, factual/overlap assessment, and user-approved publishing. A separate WordPress companion plugin is required. Skill installation alone never grants WordPress access.
 
 - **Buyer MCP URL:** `https://advertpreneur-connect.vercel.app/api/mcp`
 - **Companion WordPress plugin:** [`releases/advertpreneur-connect-wordpress-v0.7.0.zip`](releases/advertpreneur-connect-wordpress-v0.7.0.zip)

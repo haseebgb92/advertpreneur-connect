@@ -34,7 +34,7 @@ test('AES sealed credentials are encrypted and recoverable with key', () => {
 });
 
 test('reject local addresses and embedded credentials', () => {
-  for (const url of ['http://my-site.example','https://localhost','https://127.0.0.1','https://site.local','https://u:pass@example.com']) {
+  for (const url of ['http://my-site.example','https://localhost','https://127.0.0.1','https://site.local','https://u:pass@example.com','https://example.com:8443']) {
     assert.throws(() => normalizeSiteUrl(url));
   }
   assert.equal(normalizeSiteUrl('https://www.example.com/path'), 'https://www.example.com');

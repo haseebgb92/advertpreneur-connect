@@ -49,7 +49,7 @@ export default function Home() {
 
       <section className="hero">
         <div className="shell">
-          <div className="pill">WordPress + WooCommerce · MCP + Actions · v0.6.1</div>
+          <div className="pill">WordPress + WooCommerce · MCP + Actions · v0.7.0</div>
           <h1>A safer bridge between AI and WordPress.</h1>
           <p>Advertpreneur Connect gives trusted AI clients controlled access to WordPress content, SEO, media and WooCommerce — with site-aware checks and quality-gated publishing instead of blind automation.</p>
           <div className="actions"><a className="btn dark" href="/setup">Setup Advertpreneur Connect</a><a className="btn" href="https://github.com/haseebgb92/advertpreneur-connect">View on GitHub</a></div>
@@ -111,7 +111,7 @@ npm run dev`}</pre></div><div className="devCard"><div className="eyebrow">Live 
 
       <section className="final"><div className="shell"><div className="finalBox"><h2>Give AI useful WordPress access without turning publishing into a blind write operation.</h2><p>Advertpreneur Connect keeps content, SEO, images, commerce and quality checks in one controlled bridge.</p><div className="actions"><a className="btn" href="https://github.com/haseebgb92/advertpreneur-connect">View source</a><a className="btn" href="/openapi.json">OpenAPI</a></div></div></div></section>
 
-      <footer><div className="shell foot"><div>Advertpreneur Connect · v0.6.1 · Built by Advertpreneur</div><div className="footlinks"><a href="https://github.com/haseebgb92/advertpreneur-connect">GitHub</a><a href="/openapi.json">OpenAPI</a><a href="/api/health">Health</a></div></div></footer>
+      <footer><div className="shell foot"><div>Advertpreneur Connect · v0.7.0 · Built by Advertpreneur</div><div className="footlinks"><a href="https://github.com/haseebgb92/advertpreneur-connect">GitHub</a><a href="/openapi.json">OpenAPI</a><a href="/api/health">Health</a></div></div></footer>
     </main>
   );
 }

@@ -18,7 +18,7 @@ The historical MCP authorizer validates OAuth tokens, but the old storage functi
 - WordPress plugin's legacy `/connect` path continues to attach sites to private `legacy` owner for existing Action API users. OAuth users should instead use the owner-scoped MCP `connect_site` tool to attach *their own* sites.
 - The transport-specific MCP stream lifecycle must be tested after the change to construct request-scoped handlers.
 - URLs pointing at local/private domains are blocked at parsing, but DNS rebinding/SSRF prevention and redirect behavior still require a security review before public multi-tenant launch.
-- No cross-user data isolation claim is made until backend, store, database and agent integration are deployed and tested together.
+- Tenant-scoped backend, store and database have been deployed; separate second-user MCP login remains a final verification step.
 
 ## Verified 2026-10-15 progress
 - Additive production Supabase migration applied; two previously connected legacy sites retained.
@@ -29,3 +29,10 @@ The historical MCP authorizer validates OAuth tokens, but the old storage functi
 
 ## Existing authorized MCP site IDs preserved
 Production has a private 'adpc_site_access' grant table with RLS enabled and anonymous/authenticated access revoked. The existing authorized Supabase user is granted access to the two existing legacy sites without changing their IDs or removing Action API support. v0.7.0 /api/mcp uses scoped grants; random OAuth users receive no other owners' sites. Legacy /connect endpoint is disabled by default in v0.7.0; owners connect via the authenticated MCP connect_site tool. The v2 private storage Edge Function runs alongside v1 until cutover.
+
+## Validated live rollout, October 15
+- Initial production v0.7 build failed WordPress requests due to Node 24 `lookup({all:true})` callback mismatch; immediately rolled back.
+- Corrected pinned DNS callback handles both `all:true` and scalar modes; unit regression and independent real-HTTPS 401 probe passed.
+- Corrected v0.7 deployment `dpl_E3UVpgXAhq5Yc6fzR2wYqUDfMzou` promoted. Public health reported version 0.7.0; anonymous MCP and Action API both rejected with HTTP 401.
+- Authenticated MCP listed both original sites and site_status succeeded on both sites; read-only content search and SEO detection succeeded.
+- Still pending: non-owner OAuth integration test from a separately authenticated browser/client, additional agent clients and production logs audit where available.

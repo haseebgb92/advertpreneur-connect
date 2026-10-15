@@ -56,3 +56,13 @@ The `qa/run-wordpress-e2e.sh` runner provisions an isolated local WordPress Dock
 The WordPress Application Password callback accepts the site URL reported as `http://` **only when its hostname exactly matches the HMAC-signed HTTPS site**. The stored destination remains the signed HTTPS origin. This addresses proxies/WordPress multisite setups such as the Lovfah configuration where `siteurl` and `home` differ in scheme, without accepting cross-site callbacks, embedded credentials or alternate ports. Dedicated security regression tests were added.
 
 GitHub Actions run `38705273957` passed both the backend/build and real disposable WordPress integration jobs for version 0.7.2. The 0.7.3 release adds the callback check and must also pass CI after deployment.
+
+## Additional commercial-readiness audit — October 15, 2026
+
+- Public API `/api/mcp` and the private Action API return 401 to unauthenticated callers. The Supabase private store returns 401 to a deliberately invalid token, and 405 for a GET request.
+- Production npm dependency audit yielded zero known advisories. CI now runs `npm audit --omit=dev --audit-level=high` and verifies current WordPress v0.7.0 and Agensi skill v0.2.1 ZIP files match every checked-in source file byte-for-byte.
+- Supabase connected-site and site-access tables have RLS enabled with no `anon`/`authenticated` policies (deny-by-default); only the private token-protected Edge Function uses privileged access. The security advisor labels this as informational. Other shared-project advisories (public pg_net extension, leaked-password protection disabled) are outside this bridge's direct scope and should be assessed separately.
+- Current read-only Hostinger observations: Lovfah public WP REST 200 and companion route 404; WordPress Network Admin reported database-connection error. Tauqva timed out repeatedly, including Hostinger WP admin auto-login (500 timeout). MyEcomNews public REST later recovered to HTTP 200 but companion route is still 404. None of the three had a successful hosted plugin installation or remote end-to-end publishing test in this round.
+- Automatic isolated multisite conversion test was not completed because the hosting/runtime action was blocked by a safety control. Do **not** report multisite integration as verified.
+- Production Vercel runtime log retrieval returned HTTP 403 from the log API; no absence-of-errors conclusion is possible.
+- Real distinct-user OAuth cross-account isolation and actual Claude/Cursor/Codex agent content writes remain unverified. **Do not advertise unrestricted commercial production readiness yet.**

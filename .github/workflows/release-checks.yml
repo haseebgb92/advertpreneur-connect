@@ -25,8 +25,12 @@ jobs:
         run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Test backend security and route behavior
         run: npm test
+      - name: Audit production dependencies
+        run: npm audit --omit=dev --audit-level=high
       - name: Build Next.js application
         run: npm run build
+      - name: Verify current release ZIPs match checked-in source
+        run: python3 qa/verify-release-artifacts.py
       - name: PHP syntax check
         run: find wordpress/advertpreneur-connect -name '*.php' -print0 | xargs -0 -n1 php -l
       - name: Verify release archives and declared MCP tool names

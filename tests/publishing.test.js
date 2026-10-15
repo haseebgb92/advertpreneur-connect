@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { handleAction } from '../lib/action-api.js';
-import { isPublicInternetAddress } from '../lib/wordpress.js';
+import { isPublicInternetAddress, pinnedLookup } from '../lib/wordpress.js';
 
 const id = '0123456789abcdef01234567';
 process.env.ADPC_ACTION_TOKEN = 'test-private-action-token';
@@ -67,4 +67,19 @@ test('outbound transport blocks cloud metadata, private and local endpoints', ()
   for (const ip of ['1.1.1.1','8.8.8.8','2606:4700:4700::1111']) {
     assert.equal(isPublicInternetAddress(ip),true,`Should allow ${ip}`);
   }
+});
+
+
+test('pinned DNS callback supports single-IP and Node24 all-address modes', () => {
+  const record={address:'1.1.1.1',family:4};
+  const lookup=pinnedLookup(record);
+  lookup('example.com',{all:true},(err,addresses)=> {
+    assert.equal(err,null);
+    assert.deepEqual(addresses,[record]);
+  });
+  lookup('example.com',{all:false},(err,address,family)=> {
+    assert.equal(err,null);
+    assert.equal(address,'1.1.1.1');
+    assert.equal(family,4);
+  });
 });

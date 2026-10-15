@@ -4,3 +4,6 @@
 .next/
 node_modules/
 .vercel/
+
+# Isolated Codex compatibility credentials - never publish
+qa/codex-home/

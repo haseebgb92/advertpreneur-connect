@@ -2,6 +2,9 @@ import { appId, normalizeSiteUrl, publicBaseUrl } from '../../lib/config.js';
 import { signedState } from '../../lib/crypto.js';
 
 export async function GET(request) {
+  if (process.env.ADPC_ALLOW_LEGACY_CONNECT !== '1') {
+    return Response.json({ error: 'Connect your WordPress site through the authenticated Advertpreneur Connect MCP connect_site tool. The anonymous legacy onboarding endpoint is disabled.' }, { status: 403 });
+  }
   try {
     const incoming = new URL(request.url);
     const site = normalizeSiteUrl(incoming.searchParams.get('site_url'));

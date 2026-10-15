@@ -26,3 +26,6 @@ The historical MCP authorizer validates OAuth tokens, but the old storage functi
 - PHP companion version 0.7.0 tested on isolated Docker WordPress 7.1.2 installation with real draft, quality checks, permissions, stale attestation refusal, successful publish and idempotent retry.
 - Secure outbound request uses DNS-resolved pinned public IP and rejects redirects/private destinations.
 - Legacy production Vercel endpoint has not been changed.
+
+## Existing authorized MCP site IDs preserved
+Production has a private 'adpc_site_access' grant table with RLS enabled and anonymous/authenticated access revoked. The existing authorized Supabase user is granted access to the two existing legacy sites without changing their IDs or removing Action API support. v0.7.0 /api/mcp uses scoped grants; random OAuth users receive no other owners' sites. Legacy /connect endpoint is disabled by default in v0.7.0; owners connect via the authenticated MCP connect_site tool. The v2 private storage Edge Function runs alongside v1 until cutover.

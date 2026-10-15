@@ -66,3 +66,20 @@ test('storage calls carry owner; cross-account get is denied even if store retur
     globalThis.fetch = oldFetch;
   }
 });
+
+
+test('explicit site access grant permits an existing legacy site for authorized OAuth owner', async () => {
+  const oldFetch = globalThis.fetch;
+  globalThis.fetch = async (_url, args) => {
+    const action = JSON.parse(args.body);
+    assert.equal(action.owner_id, owner1);
+    return Response.json({ access_granted: true, site: {
+      id: '0123456789abcdef01234567', owner_id: 'legacy', site_url: 'https://example.org',
+      user_login: 'editor', credential_enc: seal('app-password-test'),
+    }});
+  };
+  try {
+    const site = await getSite('0123456789abcdef01234567', owner1);
+    assert.equal(site.siteUrl, 'https://example.org');
+  } finally { globalThis.fetch = oldFetch; }
+});

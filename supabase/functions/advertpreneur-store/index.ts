@@ -45,22 +45,42 @@ Deno.serve(async (request) => {
     const sites = supabase.from("adpc_connected_sites");
 
     if (body.action === "list") {
-      const { data, error: dbError } = await sites
+      const { data: own, error: ownError } = await sites
         .select("id,site_url,user_login,owner_id,connected_at,updated_at")
-        .eq("owner_id", owner)
-        .order("connected_at", { ascending: false });
-      if (dbError) throw dbError;
-      return Response.json({ sites: data || [] });
+        .eq("owner_id", owner).order("connected_at", { ascending: false });
+      if (ownError) throw ownError;
+      const { data: grants, error: grantError } = await supabase
+        .from("adpc_site_access").select("site_id").eq("owner_id", owner);
+      if (grantError) throw grantError;
+      const ids = (grants || []).map((row) => row.site_id);
+      let shared = [];
+      if (ids.length) {
+        const { data, error: sharedError } = await sites
+          .select("id,site_url,user_login,owner_id,connected_at,updated_at")
+          .in("id", ids).order("connected_at", { ascending: false });
+        if (sharedError) throw sharedError;
+        shared = data || [];
+      }
+      const merged = new Map();
+      for (const row of [...(own || []), ...shared]) merged.set(row.id, row);
+      return Response.json({ sites: [...merged.values()] });
     }
 
     if (body.action === "get") {
       const id = String(body.id || "");
-      if (!id || id.length > 64) return error("Invalid site id", 400);
+      if (!/^[a-f0-9]{24}$/.test(id)) return error("Invalid site id", 400);
       const { data, error: dbError } = await sites
         .select("id,site_url,user_login,owner_id,credential_enc,connected_at,updated_at")
-        .eq("id", id).eq("owner_id", owner).maybeSingle();
+        .eq("id", id).maybeSingle();
       if (dbError) throw dbError;
-      return Response.json({ site: data || null });
+      if (!data) return Response.json({ site: null });
+      if (data.owner_id === owner) return Response.json({ site: data, access_granted: true });
+      const { data: grant, error: grantError } = await supabase
+        .from("adpc_site_access").select("site_id")
+        .eq("owner_id", owner).eq("site_id", id).maybeSingle();
+      if (grantError) throw grantError;
+      if (!grant) return Response.json({ site: null });
+      return Response.json({ site: data, access_granted: true });
     }
 
     if (body.action === "upsert") {

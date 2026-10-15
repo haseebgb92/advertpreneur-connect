@@ -27,13 +27,20 @@ for plugin in woocommerce seo-by-rank-math; do
   fi
 done
 qa_eval() {
-  local local_file="$1"; shift
-  dc run --rm --user 33:33 -e HTTP_HOST=localhost:8099 \
+  local local_file="$1" expected="$2"; shift 2
+  local output
+  output="$(dc run --rm --user 33:33 -e HTTP_HOST=localhost:8099 \
     -v "$PWD/qa/$local_file:/tmp/adpc-test.php:ro" "$@" \
-    wpcli wp eval-file /tmp/adpc-test.php --allow-root
+    wpcli wp eval-file /tmp/adpc-test.php --allow-root 2>&1)" || { printf '%s\n' "$output"; return 1; }
+  printf '%s\n' "$output"
+  if ! grep -q -- "$expected" <<< "$output"; then
+    echo "QA failure: expected marker $expected missing from $local_file" >&2
+    return 1
+  fi
 }
-qa_eval wordpress-integration.php
-qa_eval media-test.php -v "$PWD/qa/media-gradient.png:/tmp/adpc-image.png:ro"
-qa_eval woocommerce-integration.php
-qa_eval rankmath-integration.php
+qa_eval wordpress-integration.php QA_TESTS_PASSED
+qa_eval media-test.php MEDIA_QA_PASSED -v "$PWD/qa/media-gradient.png:/tmp/adpc-image.png:ro"
+qa_eval woocommerce-integration.php WOOCOMMERCE_QA_PASSED
+qa_eval rankmath-integration.php RANKMATH_QA_PASSED
+qa_eval content-privacy.php PRIVACY_QA_PASSED
 printf 'WORDPRESS_HOSTED_QA_PASSED: WordPress, SEO, images, access controls, WooCommerce and publishing on disposable Docker site.\n'

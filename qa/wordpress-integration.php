@@ -19,7 +19,7 @@ wp_set_current_user(1);
 foreach (get_posts(['post_type'=>'page','post_status'=>'any','posts_per_page'=>500]) as $existing_fixture) {
     if (strpos($existing_fixture->post_title,'Advertpreneur Agensi QA Fixture ')===0) wp_delete_post($existing_fixture->ID, true);
 }
-adpc_assert(adpc_rest('GET','status')['data']['version']==='0.7.0','plugin status reports 0.7.0');
+adpc_assert(adpc_rest('GET','status')['data']['version']==='0.7.1','plugin status reports 0.7.1');
 $sections=[
 ['Planning the publication','Begin with an explicit audience and a specific answer to the reader question. Examine related articles already on the website so the new draft contributes distinct information rather than repeating previous material. Record the intended outcome before writing, including which question the page should answer and which claims require support.'],
 ['Building accurate content','Construct the article from verifiable information, relevant examples and a straightforward introduction. Headings should reflect the progression of ideas rather than promotional phrases. Include internal links only after checking that the destinations are published and contextually relevant, and keep each explanation accurate to the evidence available.'],

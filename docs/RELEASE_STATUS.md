@@ -1,9 +1,9 @@
 # Advertpreneur Connect — Production readiness record
 
 **Reviewed:** October 15, 2026
-**Product:** Advertpreneur Connect 0.7.3 WordPress/MCP backend, plugin 0.7.0, Agensi skill package 0.2.1.
+**Product:** Advertpreneur Connect 0.7.3 WordPress/MCP backend, plugin 0.7.1, Agensi skill package 0.2.1.
 **Production endpoint:** https://advertpreneur-connect.vercel.app/api/mcp
-**Companion WordPress ZIP:** [v0.7.0](../releases/advertpreneur-connect-wordpress-v0.7.0.zip)
+**Companion WordPress ZIP:** [v0.7.1](../releases/advertpreneur-connect-wordpress-v0.7.1.zip)
 **Agensi skill ZIP:** [v0.2.1](../releases/advertpreneur-connect-agensi-skill-v0.2.1.zip)
 
 ## Verified in production
@@ -66,3 +66,7 @@ GitHub Actions run `38705273957` passed both the backend/build and real disposab
 - Automatic isolated multisite conversion test was not completed because the hosting/runtime action was blocked by a safety control. Do **not** report multisite integration as verified.
 - Production Vercel runtime log retrieval returned HTTP 403 from the log API; no absence-of-errors conclusion is possible.
 - Real distinct-user OAuth cross-account isolation and actual Claude/Cursor/Codex agent content writes remain unverified. **Do not advertise unrestricted commercial production readiness yet.**
+
+## Security hardening in companion plugin 0.7.1
+
+Content search, WooCommerce product listing, similarity/overlap reports, and internal-link source checks now enforce per-object unpublished-content visibility. A contributor can search their own drafts but cannot enumerate another author's unpublished titles and excerpts. A dedicated real WordPress role-isolation regression was added; the CI harness also validates explicit per-suite pass markers to prevent falsely green builds when an eval fixture fails to execute. The old v0.7.0 ZIP is preserved as immutable historical artifact; **use v0.7.1 for new installations**.

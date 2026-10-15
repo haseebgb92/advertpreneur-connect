@@ -3,7 +3,7 @@ Contributors: advertpreneur
 Tags: rest-api, ai, mcp, content, media
 Requires at least: 6.0
 Requires PHP: 7.4
-Stable tag: 0.7.0
+Stable tag: 0.7.1
 License: GPLv2 or later
 
 A secure bridge between WordPress and trusted AI/MCP clients. The plugin itself does not generate content.

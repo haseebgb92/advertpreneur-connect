@@ -6,7 +6,7 @@ import hashlib
 
 ROOT = Path(__file__).resolve().parents[1]
 RELEASES = [
-    ('releases/advertpreneur-connect-wordpress-v0.7.0.zip', 'wordpress'),
+    ('releases/advertpreneur-connect-wordpress-v0.7.1.zip', 'wordpress'),
     ('releases/advertpreneur-connect-agensi-skill-v0.2.1.zip', 'skills'),
 ]
 for package, source_dir in RELEASES:

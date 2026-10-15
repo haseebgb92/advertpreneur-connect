@@ -68,7 +68,7 @@ Each new OAuth owner uses a scoped site ID. Existing sites may retain legacy IDs
 
 ## WordPress plugin
 
-Install the reviewed plugin ZIP from `releases/advertpreneur-connect-wordpress-v0.7.0.zip` on **authorized sites only**. Version 0.7.0 has per-object checks around attestation, SEO updates, featured media and WooCommerce; existing companion v0.6.3 has passed read-only compatibility checks with backend 0.7.0, but upgrade deliberately after site backup.
+Install the reviewed plugin ZIP from `releases/advertpreneur-connect-wordpress-v0.7.1.zip` on **authorized sites only**. Version 0.7.1 has per-object checks and hides other authors’ unpublished drafts from search and similarity results around attestation, SEO updates, featured media and WooCommerce; existing companion v0.6.3 has passed read-only compatibility checks with backend 0.7.0, but upgrade deliberately after site backup.
 
 The user connects via WordPress native Application Password approval. Neither normal WordPress passwords nor service tokens should be shared in chat.
 

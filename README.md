@@ -132,7 +132,7 @@ Do not report an image as uploaded until WordPress returns a real media ID.
 Use the [Advertpreneur Connect v0.2.1 agent skill](releases/advertpreneur-connect-agensi-skill-v0.2.1.zip) from the Agensi ZIP to guide content planning, real WordPress draft creation, SEO checks, approved image uploads, factual/overlap assessment, and user-approved publishing. A separate WordPress companion plugin is required. Skill installation alone never grants WordPress access.
 
 - **Buyer MCP URL:** `https://advertpreneur-connect.vercel.app/api/mcp`
-- **Companion WordPress plugin:** [`releases/advertpreneur-connect-wordpress-v0.7.0.zip`](releases/advertpreneur-connect-wordpress-v0.7.0.zip)
+- **Companion WordPress plugin:** [`releases/advertpreneur-connect-wordpress-v0.7.1.zip`](releases/advertpreneur-connect-wordpress-v0.7.1.zip)
 - **Compatibility:** see [verified and pending agent tests](docs/AGENSI_COMPATIBILITY.md). ChatGPT MCP read-only operations are verified, Codex MCP OAuth setup is verified; other clients need end-to-end tests.
 - **Multi-tenant isolation:** OAuth users see only sites owned or explicitly granted to their identity. Existing private legacy IDs are preserved via a private grant table.
 - **Release tests:** `npm test` and the disposable WordPress QA scripts in `qa/`, plus live read-only smoke tests.

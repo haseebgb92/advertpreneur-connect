@@ -236,6 +236,9 @@ class ADPC_REST {
         ]);
         $items = [];
         foreach ($query->posts as $post) {
+            // A user with edit_posts cannot necessarily read another author's
+            // unpublished drafts. Never reveal their titles or excerpts in search.
+            if ($post->post_status !== 'publish' && !current_user_can('edit_post', $post->ID)) continue;
             $text = ADPC_Quality::normalized_text(ADPC_Quality::content_for_post($post));
             $items[] = [
                 'id' => $post->ID,
@@ -478,6 +481,9 @@ class ADPC_REST {
         $limit = min(30, max(1, (int) ($request->get_param('limit') ?: 10)));
         $current = $post_id ? get_post($post_id) : null;
         if ($post_id && !$current) return new WP_Error('adpc_not_found', 'Current content not found.', ['status' => 404]);
+        if ($current && $current->post_status !== 'publish' && !current_user_can('edit_post', $post_id)) {
+            return new WP_Error('adpc_forbidden', 'Cannot read this content.', ['status' => 403]);
+        }
         if ($query_text === '' && $current) $query_text = $current->post_title;
         if ($query_text === '') return new WP_Error('adpc_query_required', 'A search topic or post_id is required.', ['status' => 400]);
 
@@ -1405,7 +1411,11 @@ class ADPC_REST {
         $search = sanitize_text_field((string) $request->get_param('search'));
         if ($search !== '') $args['search'] = $search;
         $products = wc_get_products($args);
-        $items = array_map([self::class, 'product_response'], $products);
+        $items = [];
+        foreach ($products as $product) {
+            if ($product->get_status() !== 'publish' && !current_user_can('edit_post', $product->get_id())) continue;
+            $items[] = self::product_response($product);
+        }
         return rest_ensure_response(['count' => count($items), 'items' => $items]);
     }
 

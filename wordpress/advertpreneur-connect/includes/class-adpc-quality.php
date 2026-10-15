@@ -82,6 +82,9 @@ class ADPC_Quality {
         foreach ($query->posts as $other_id) {
             $other = get_post($other_id);
             if (!$other) continue;
+            // Overlap reports are returned to the requester; never expose
+            // another author's hidden draft in their matching-title results.
+            if ($other->post_status !== 'publish' && !current_user_can('edit_post', $other_id)) continue;
             $body = self::jaccard($target_shingles, self::shingles(self::content_for_post($other)));
             $title = self::title_similarity($post->post_title, $other->post_title);
             if ($body >= 0.18 || $title >= 0.55) {

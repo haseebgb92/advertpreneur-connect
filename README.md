@@ -1,6 +1,6 @@
 # Advertpreneur Connect — AI-to-WordPress MCP & Action Bridge
 
-**Backend v0.7.1** · Next.js · Vercel · Supabase · WordPress · WooCommerce
+**Backend v0.7.2** · Next.js · Vercel · Supabase · WordPress · WooCommerce
 
 Advertpreneur Connect is a controlled bridge that lets trusted AI clients work with WordPress content, SEO metadata, media and WooCommerce while enforcing site-aware checks and a quality-gated publishing workflow.\n\n**Website:** https://advertpreneur-connect.vercel.app · **Setup guide:** https://advertpreneur-connect.vercel.app/setup · **Supabase/OAuth setup:** [docs/SUPABASE_SETUP.md](docs/SUPABASE_SETUP.md) · **OpenAPI:** https://advertpreneur-connect.vercel.app/openapi.json
 
@@ -138,3 +138,12 @@ Use the [Advertpreneur Connect v0.2.1 agent skill](releases/advertpreneur-connec
 - **Release tests:** `npm test` and the disposable WordPress QA scripts in `qa/`, plus live read-only smoke tests.
 
 Keep static bearer tokens, Application Passwords and production environment values out of marketplace ZIPs, web pages and support emails.
+
+
+## WordPress connection preflight
+
+The `connect_site` MCP tool now makes a credential-free, DNS-pinned HTTPS check of the site's `/wp-json/advertpreneur-connect/v1/status` REST route before returning an Application Password approval URL. WordPress returning a route-specific `rest_forbidden` permission error (401/403) is expected and shows that the plugin is installed and private. Missing plugins, unhealthy REST routes, untrusted redirects, missing DNS and network timeouts fail closed with actionable messages. This probe never sends a site password. Existing connected sites are not affected by the check.
+
+## Repeatable end-to-end testing
+
+Run the disposable WordPress test suite with `bash qa/run-wordpress-e2e.sh`: it creates a local Docker WordPress instance, installs WooCommerce and Rank Math for QA, then validates draft creation, media uploads, permissions, quality gating, product publishing and SEO read-back. The GitHub Actions workflow runs this alongside backend tests and the Next.js build. This is *not* a production-site test; production MCP compatibility requires an approved public HTTPS staging domain and separate OAuth client verification.

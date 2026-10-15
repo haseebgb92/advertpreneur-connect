@@ -1,7 +1,7 @@
 # Advertpreneur Connect — Production readiness record
 
 **Reviewed:** October 15, 2026
-**Product:** Advertpreneur Connect 0.7.1 WordPress/MCP backend, plugin 0.7.0, Agensi skill package 0.2.1.
+**Product:** Advertpreneur Connect 0.7.2 WordPress/MCP backend, plugin 0.7.0, Agensi skill package 0.2.1.
 **Production endpoint:** https://advertpreneur-connect.vercel.app/api/mcp
 **Companion WordPress ZIP:** [v0.7.0](../releases/advertpreneur-connect-wordpress-v0.7.0.zip)
 **Agensi skill ZIP:** [v0.2.1](../releases/advertpreneur-connect-agensi-skill-v0.2.1.zip)
@@ -17,7 +17,7 @@
 - WordPress 7.1.2, PHP 8.3 with Advertpreneur Connect plugin 0.7.0: real REST draft creation, read-back, structural and overlap checks, document attestation, forbidden contributor edits, stale attestation rejection, authorized publish and idempotent retry passed.
 - Real PNG upload, native dimensions, media metadata, featured image placement and unauthorized contributor rejection passed.
 - WooCommerce: draft creation, duplicate prevention, contributor price-write denial, structural checks, product attestation, content-update invalidation, reattestation and authorized publication passed.
-- Eleven backend Node.js unit/integration tests passed; a real HTTPS pinned-DNS probe returned an expected WordPress 401 for invalid test credentials.
+- Fourteen backend Node.js unit/integration tests passed; a real HTTPS pinned-DNS probe returned an expected WordPress 401 for invalid test credentials.
 - Next.js optimized build and PHP syntax checks passed. GitHub Actions release workflow passed on commit `4c099392`. Dependency audit returned zero known advisories at the checked lockfile versions.
 - Agensi ZIP has a valid folder-root `SKILL.md` + reference files, no executable scripts or hard-coded credentials; archive integrity checked. Agensi has not reviewed or approved the listing.
 
@@ -40,3 +40,13 @@ The global Action token and optional static MCP bearer are reserved for private 
 ## Hosted upload constraints
 
 The MCP base64 image upload now rejects payloads above 4,000,000 characters before contacting WordPress. This is necessary because Vercel Function request bodies are limited to 4.5 MB including base64 expansion. For larger assets use `import_image_url` with approved public HTTPS media; WordPress validates the image and can accept up to 8 MB via that route.
+
+## Hostinger candidate assessment (2026-10-15)
+
+The user expressly excluded Advertpreneur.com and CoocooBabys.com from current host testing. Approved candidates: tauqva.com, lovfah.com, myecomnews.com. Lovfah.com public WP REST index returned 200, companion status route 404; WordPress admin confirmed a multisite network. MyEcomNews.com WP REST index returned 500, companion route 404, WP Admin lists active Rank Math and Hostinger displayed a 16-vulnerability warning. Tauqva.com HTTP checks timed out; Hostinger displayed a domain renewal-failed alert. No plugins, posts, settings, credentials or content on these three sites were changed by this assessment. Hostinger staging/plugin upload operations could not be safely completed through the available UI controls.
+
+These candidates are **not yet end-to-end certified**. Before a full customer-site test, use a working WordPress staging environment under a publicly resolvable HTTPS domain, install plugin v0.7.0, authorize a test account through MCP, execute draft/media/SEO read-back, and test cross-account isolation. Do not call a domain tested until this has succeeded.
+
+## Reproducible WordPress integration suite (backend 0.7.2)
+
+The `qa/run-wordpress-e2e.sh` runner provisions an isolated local WordPress Docker site, installs plugin 0.7.0, WooCommerce and Rank Math, runs REST tests for draft/attestation/publishing, uploads a real PNG, validates permissions, checks WooCommerce catalog protections, and verifies Rank Math native metadata round-trips. It is now included as a dedicated GitHub Actions job. The runner creates no public website, stores no customer credentials and leaves all customer domains untouched. A passing local integration suite is **not** a substitute for authorized public HTTPS MCP end-to-end testing.

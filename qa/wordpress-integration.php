@@ -15,6 +15,10 @@ function adpc_rest($method, $endpoint, $params=[]) {
   return ['code'=>$response->get_status(),'data'=>$response->get_data()];
 }
 wp_set_current_user(1);
+// Clean only historical disposable QA pages on localhost before repeat tests.
+foreach (get_posts(['post_type'=>'page','post_status'=>'any','posts_per_page'=>500]) as $existing_fixture) {
+    if (strpos($existing_fixture->post_title,'Advertpreneur Agensi QA Fixture ')===0) wp_delete_post($existing_fixture->ID, true);
+}
 adpc_assert(adpc_rest('GET','status')['data']['version']==='0.7.0','plugin status reports 0.7.0');
 $sections=[
 ['Planning the publication','Begin with an explicit audience and a specific answer to the reader question. Examine related articles already on the website so the new draft contributes distinct information rather than repeating previous material. Record the intended outcome before writing, including which question the page should answer and which claims require support.'],

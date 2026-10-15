@@ -1,3 +1,3 @@
 export async function GET() {
-  return Response.json({ ok: true, service: 'Advertpreneur Connect', version: '0.7.1', oauth: '/.well-known/oauth-protected-resource', actions: '/api/action/*', openapi: '/openapi.json', mcp: '/api/mcp' });
+  return Response.json({ ok: true, service: 'Advertpreneur Connect', version: '0.7.2', oauth: '/.well-known/oauth-protected-resource', actions: '/api/action/*', openapi: '/openapi.json', mcp: '/api/mcp' });
 }

@@ -1,4 +1,4 @@
-# v0.7.0 private tenant-isolation rollout plan (not yet deployed)
+# Advertpreneur Connect 0.7.x tenant-isolation rollout record
 
 ## Critical reason
 The historical MCP authorizer validates OAuth tokens, but the old storage function lists/loads *all* WordPress sites regardless of user. A public marketplace listing cannot ship against that shared implementation.
@@ -36,3 +36,7 @@ Production has a private 'adpc_site_access' grant table with RLS enabled and ano
 - Corrected v0.7 deployment `dpl_E3UVpgXAhq5Yc6fzR2wYqUDfMzou` promoted. Public health reported version 0.7.0; anonymous MCP and Action API both rejected with HTTP 401.
 - Authenticated MCP listed both original sites and site_status succeeded on both sites; read-only content search and SEO detection succeeded.
 - Still pending: non-owner OAuth integration test from a separately authenticated browser/client, additional agent clients and production logs audit where available.
+
+
+## Hostinger domain checks October 15, 2026
+The user excluded Advertpreneur.com and CoocooBabys from this QA attempt. Public reachability and WordPress admin were inspected only for lovfah.com, myecomnews.com and tauqva.com. Lovfah WordPress REST index responded, but the companion plugin was missing; it is a multisite installation. MyEcomNews had an HTTP 500 from its REST index, the companion plugin was not installed, and Hostinger displayed 16 reported WordPress vulnerabilities. Tauqva returned timeouts and the dashboard displayed a failed renewal warning. Hostinger's staging and plugin-upload workflow could not be safely completed using the browser control. No installation or content write occurred on these domains.

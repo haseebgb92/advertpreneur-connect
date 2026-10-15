@@ -37,3 +37,74 @@ WordPress companion plugin is required on the target site. Users should connect 
 
 ## Publishing approval enforcement
 The WordPress server enforces a content-quality attestation, but not an independent human-approval nonce. The SKILL.md requires the agent to obtain explicit consent; agent hosts should configure high-risk write actions to require a human approval. Do not advertise a server-side human-approval guarantee.
+
+## Exact setup examples by agent
+
+These examples configure **the WordPress MCP transport**. Installation of the Agensi skill is a separate operation. The examples do not pass secrets on a command line. Complete the OAuth sign-in using your chosen agent/client and verify the tool list afterward.
+
+### Codex CLI (configuration + OAuth setup tested on v0.162.1)
+
+```bash
+codex mcp add advertpreneur-connect --url https://advertpreneur-connect.vercel.app/api/mcp
+codex mcp login advertpreneur-connect
+codex mcp list
+```
+
+Note: An isolated Codex profile completed MCP OAuth configuration, but actual Codex agent execution was blocked by **model authentication HTTP 401** in that isolated profile. This is not a WordPress connector success certificate; authenticate Codex itself before running the live test.
+
+### Claude Code (documented configuration; live integration untested)
+
+```bash
+claude mcp add --transport http --scope user advertpreneur-connect https://advertpreneur-connect.vercel.app/api/mcp
+claude mcp list
+```
+
+Inside Claude Code use `/mcp` to complete authentication and verify tools. Confirm the companion plugin is installed on your WordPress site. See the Claude Code official MCP documentation for version-specific details.
+
+### Cursor (documented configuration; live integration untested)
+
+Place the following in your Cursor MCP settings (for example `~/.cursor/mcp.json` on Linux/macOS) using the supported Cursor version:
+
+```json
+{
+  "mcpServers": {
+    "advertpreneur-connect": {
+      "url": "https://advertpreneur-connect.vercel.app/api/mcp"
+    }
+  }
+}
+```
+
+Complete authorization inside Cursor, refresh tools and run a read-only `list_sites` call before writing.
+
+### GitHub Copilot / VS Code Agent Mode (documented configuration; live integration untested)
+
+Create a project-local `.vscode/mcp.json` when applicable:
+
+```json
+{
+  "servers": {
+    "advertpreneur-connect": {
+      "type": "http",
+      "url": "https://advertpreneur-connect.vercel.app/api/mcp"
+    }
+  }
+}
+```
+
+Enable the server in Agent Mode and finish OAuth. Do not commit local tokens or reuse someone else's site access.
+
+### ChatGPT
+
+Connect the **Advertpreneur Connect** plugin/MCP connection through ChatGPT's supported Plugins/Work configuration and complete its OAuth flow. The installed connection has successfully executed read-only WordPress site listing, status, content search and SEO detection. Loading Agensi's skill is a separate Agensi-connection process; do not assume every ChatGPT interface or plan exposes both integrations.
+
+### Gemini CLI, OpenClaw, Windsurf and other Agensi-listed agents
+
+Install the Agensi skill using each supported client’s documented skill mechanism, then separately configure authenticated remote HTTP MCP. Do not guess configuration filenames, enable static shared-bearer access, or advertise a successful end-to-end test until that agent has demonstrably performed the read-only preflight and staging draft workflow.
+
+**Every agent must pass the same acceptance sequence:** OAuth login → list only authorized sites → site status → existing content search → explicit test draft on staging → SEO read-back → quality/overlap → user-approved publish on staging → read-back. Do not run publishing tests on a customer website.
+
+### Source references
+
+- OpenAI Docs MCP agent configuration examples: https://developers.openai.com/learn/docs-mcp
+- Agensi cross-agent SKILL.md testing and caveats: https://www.agensi.io/learn/skill-md-cross-agent-compatibility-tested
